@@ -76,7 +76,7 @@ This rule takes one object argument of type object that defines an associative a
 
 ```jsx
 <a id='my-id'></a>                  <!-- Good: id is provided-->
-<input id='my-id' />          <!-- Good: id is provided-->
+<input id='my-id' />                <!-- Good: id is provided-->
 ```
 
 ### Fail
