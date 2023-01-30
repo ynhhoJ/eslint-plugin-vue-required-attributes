@@ -46,6 +46,10 @@
         "prev": "*",
         "next": "return"
       }
+    ],
+    "eol-last": [
+      "error",
+      "always"
     ]
-  },
+  }
 }

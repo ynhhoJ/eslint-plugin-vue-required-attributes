@@ -52,6 +52,39 @@ tester.run("require-attributes", rule, {
         id: ['a'],
       }]
     },
+    {
+      filename: 'test.vue',
+      code: `<template>
+      <client-only>
+        <div class="">
+          <div class="">
+            <test-field style="">
+              <field class="">
+                <input
+                  v-model="myName"
+                  size="is-small"
+                  type="search"
+                  data="data"
+                ></input>
+                
+                <p>
+                  <button
+                    data="data"
+                    type="is-primary"
+                    icon-right="loading"
+                  />
+                </p>
+              </field>
+            </test-field>
+          </div>
+        </div>
+      </client-only>
+    </template>
+    `,
+      options: [{
+        'data': ['input', 'button', 'select', 'datepicker']
+      }]
+    }
   ],
 
   invalid: [
