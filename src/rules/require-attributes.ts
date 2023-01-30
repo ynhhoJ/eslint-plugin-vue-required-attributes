@@ -1,6 +1,8 @@
 import { Rule } from "eslint";
 import { AST } from "vue-eslint-parser";
 
+import hasDirectiveKeyArgument from '../guards/hasDirectiveKeyArgument';
+
 const defaultMessage = (tagName: string, missedAttribute: string) => {
   return `"${tagName}" component must have "${missedAttribute}" attribute.`;
 };
@@ -38,8 +40,8 @@ const rule: Rule.RuleModule = {
           const attributesName = elementAttributes.map((item) => {
             const itemKey = item.key;
 
-            if (itemKey.type === 'VDirectiveKey' && "argument" in itemKey) {
-              const itemArgument = itemKey.argument as AST.VIdentifier;
+            if (itemKey.type === 'VDirectiveKey' && hasDirectiveKeyArgument(itemKey.argument)) {
+              const itemArgument = itemKey.argument;
 
               return itemArgument.rawName;
             }
