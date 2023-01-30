@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-vue-required-attributes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "ynhhoJ",
   "description": "Require specified attributes on specified components from being used!",
   "license": "MIT",
