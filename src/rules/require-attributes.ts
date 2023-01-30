@@ -11,7 +11,7 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Requires specified attribute to be used in component.',
+      description: 'Requires specified attribute to be used into tag.',
       recommended: true,
     },
   },
@@ -19,42 +19,40 @@ const rule: Rule.RuleModule = {
   create: (context) => {
     return context.parserServices.defineTemplateBodyVisitor({
       VElement(node: AST.VElement) {
-        const options = context.options[0] || {};
-        const optionsObjectKeys = Object.keys(options);
+        const attributesList = context.options[0] || {};
+        const attributesObjectKeys = Object.keys(attributesList);
 
-        if (!optionsObjectKeys.length) {
+        if (!attributesObjectKeys.length) {
           return;
         }
 
-        const optionsSecond = context.options[1] || defaultMessage;
+        const customErrorMessageFunction = context.options[1] || defaultMessage;
         const elementName = node.rawName;
 
-        Object.keys(options).forEach((key) => {
-          const includesKey = options[key].includes(elementName);
-
-          if (!includesKey) {
+        Object.keys(attributesList).forEach((attributes) => {
+          if (!attributesList[attributes].includes(elementName)) {
             return;
           }
 
-          const elementAttributes = node.startTag.attributes;
-          const attributesName = elementAttributes.map((item) => {
-            const itemKey = item.key;
+          const nodeAttributesList = node.startTag.attributes;
+          const attributesNames = nodeAttributesList.map((nodeAttribute) => {
+            const { key } = nodeAttribute;
 
-            if (itemKey.type === 'VDirectiveKey' && hasDirectiveKeyArgument(itemKey.argument)) {
-              const itemArgument = itemKey.argument;
+            if (key.type === 'VDirectiveKey' && hasDirectiveKeyArgument(key.argument)) {
+              const { rawName } = key.argument;
 
-              return itemArgument.rawName;
+              return rawName;
             }
 
-            return item.key.name;
+            return nodeAttribute.key.name;
           });
 
-          if (attributesName.includes(key)) {
+          if (attributesNames.includes(attributes)) {
             return;
           }
 
           context.report({
-            message: optionsSecond(elementName, key),
+            message: customErrorMessageFunction(elementName, attributes),
             loc: node.loc,
           });
         });
